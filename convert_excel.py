@@ -203,19 +203,22 @@ if output_filename != '':
     output_data = pd.ExcelFile(output_filename)
     if output_sheets != output_data.sheet_names:
         ErrorBox('Incorrect NORMALIZED_TABLE file selected. Click CANCEL if None')
-    
+        
+    try:
     # add to existing output sheet
-    project_table = pd.concat([output_data.parse('PROJECT'), project_table], ignore_index=True)
-    donor_table = pd.concat([output_data.parse('DONOR'), donor_table], ignore_index=True)
-    project_resources_table = pd.concat([output_data.parse('PROJECT_RESOURCE'),project_resources_table], ignore_index=True)
-    project_post_title_table = pd.concat([output_data.parse('PROJECT_POST_TITLE'), project_post_title_table], ignore_index=True)
-    project_approval_table = pd.concat([output_data.parse('PROJECT_APPROVAL'), project_approval_table], ignore_index=True)
-    output_table = pd.concat([output_data.parse('OUTPUT'), output_table], ignore_index=True)
-    activity_table = pd.concat([output_data.parse('PLANNED_ACTIVITY'),activity_table], ignore_index=True)
-    activity_country_table = pd.concat([output_data.parse('ACTIVITY_COUNTRY'), activity_country_table], ignore_index=True)
-    budget_code_table = pd.concat([output_data.parse('BUDGET_CODE'), budget_code_table], ignore_index=True)
-    activity_budget_table = pd.concat([output_data.parse('ACTIVITY_BUDGET'), activity_budget_table], ignore_index=True)
-    indicator_table = pd.concat([output_data.parse('INDICATOR'), indicator_table], ignore_index=True)
+        project_table = pd.concat([output_data.parse('PROJECT'), project_table], ignore_index=True)
+        donor_table = pd.concat([output_data.parse('DONOR'), donor_table], ignore_index=True)
+        project_resources_table = pd.concat([output_data.parse('PROJECT_RESOURCE'),project_resources_table], ignore_index=True)
+        project_post_title_table = pd.concat([output_data.parse('PROJECT_POST_TITLE'), project_post_title_table], ignore_index=True)
+        project_approval_table = pd.concat([output_data.parse('PROJECT_APPROVAL'), project_approval_table], ignore_index=True)
+        output_table = pd.concat([output_data.parse('OUTPUT'), output_table], ignore_index=True)
+        activity_table = pd.concat([output_data.parse('PLANNED_ACTIVITY'),activity_table], ignore_index=True)
+        activity_country_table = pd.concat([output_data.parse('ACTIVITY_COUNTRY'), activity_country_table], ignore_index=True)
+        budget_code_table = pd.concat([output_data.parse('BUDGET_CODE'), budget_code_table], ignore_index=True)
+        activity_budget_table = pd.concat([output_data.parse('ACTIVITY_BUDGET'), activity_budget_table], ignore_index=True)
+        indicator_table = pd.concat([output_data.parse('INDICATOR'), indicator_table], ignore_index=True)
+    except Exception as e:
+        ErrorBox(e)
         
         
 
