@@ -170,6 +170,10 @@ try:
         try:
             # adding to indicator table
             indicator = input_data.parse(f'INDICATOR {count}')
+            indicator['PROJECT_OUTPUT'] = output.iloc[0]['PROJECT_OUTPUT']
+            indicator = indicator[indicator_columns]
+            indicator_table = pd.concat([indicator_table, indicator], ignore_index=True)
+            indicator_table = indicator_table.drop_duplicates()
         except ValueError:
             pass
         
@@ -199,3 +203,35 @@ if output_filename != '':
     output_data = pd.ExcelFile(output_filename)
     if output_sheets != output_data.sheet_names:
         ErrorBox('Incorrect NORMALIZED_TABLE file selected. Click CANCEL if None')
+    
+    # add to existing output sheet
+    project_table = pd.concat([output_data.parse('PROJECT'), project_table], ignore_index=True)
+    donor_table = pd.concat([output_data.parse('DONOR'), donor_table], ignore_index=True)
+    project_resources_table = pd.concat([output_data.parse('PROJECT_RESOURCE'),project_resources_table], ignore_index=True)
+    project_post_title_table = pd.concat([output_data.parse('PROJECT_POST_TITLE'), project_post_title_table], ignore_index=True)
+    project_approval_table = pd.concat([output_data.parse('PROJECT_APPROVAL'), project_approval_table], ignore_index=True)
+    output_table = pd.concat([output_data.parse('OUTPUT'), output_table], ignore_index=True)
+    activity_table = pd.concat([output_data.parse('PLANNED_ACTIVITY'),activity_table], ignore_index=True)
+    activity_country_table = pd.concat([output_data.parse('ACTIVITY_COUNTRY'), activity_country_table], ignore_index=True)
+    budget_code_table = pd.concat([output_data.parse('BUDGET_CODE'), budget_code_table], ignore_index=True)
+    activity_budget_table = pd.concat([output_data.parse('ACTIVITY_BUDGET'), activity_budget_table], ignore_index=True)
+    indicator_table = pd.concat([output_data.parse('INDICATOR'), indicator_table], ignore_index=True)
+        
+        
+
+else:
+    output_filename = 'NORMALIZED_TABLE.xlsx'
+    
+with pd.ExcelWriter(output_filename, engine='xlsxwriter') as writer:
+    # save to file
+    project_table.to_excel(writer, sheet_name='PROJECT', index=False)
+    donor_table.to_excel(writer, sheet_name='DONOR', index=False)
+    project_resources_table.to_excel(writer, sheet_name='PROJECT_RESOURCE', index=False)
+    project_post_title_table.to_excel(writer, sheet_name='PROJECT_POST_TITLE', index=False)
+    project_approval_table.to_excel(writer, sheet_name='PROJECT_APPROVAL', index=False)
+    output_table.to_excel(writer, sheet_name='OUTPUT', index=False)
+    activity_table.to_excel(writer, sheet_name='PLANNED_ACTIVITY', index=False)
+    activity_country_table.to_excel(writer, sheet_name='ACTIVITY_COUNTRY', index=False)
+    budget_code_table.to_excel(writer, sheet_name='BUDGET_CODE', index=False)
+    activity_budget_table.to_excel(writer, sheet_name='ACTIVITY_BUDGET', index=False)
+    indicator_table.to_excel(writer, sheet_name='INDICATOR', index=False)
